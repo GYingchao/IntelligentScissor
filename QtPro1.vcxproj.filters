@@ -59,6 +59,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_imageDisplayer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="imageHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qtpro1.h">
@@ -77,6 +80,12 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_qtpro1.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="imageHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pixelNode.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

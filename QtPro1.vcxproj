@@ -90,6 +90,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="imageDisplayer.cpp" />
+    <ClCompile Include="imageHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="qtpro1.cpp" />
   </ItemGroup>
@@ -120,6 +121,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_qtpro1.h" />
+    <ClInclude Include="imageHandler.h" />
+    <ClInclude Include="pixelNode.h" />
     <CustomBuild Include="imageDisplayer.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing imageDisplayer.h...</Message>
