@@ -5,6 +5,7 @@
 #include <QtGui/qfiledialog.h>
 #include "ui_qtpro1.h"
 #include "imageDisplayer.h"
+#include "imageHandler.h"
 
 
 class QtPro1 : public QMainWindow
@@ -19,6 +20,7 @@ public slots:
 	void on_actionOpen_Image_triggered();
 private:
 	Ui::QtPro1Class ui;
+	ImageHandler *img_handler;
 };
 
 #endif // QTPRO1_H

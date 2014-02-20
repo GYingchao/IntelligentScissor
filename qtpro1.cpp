@@ -20,5 +20,10 @@ void QtPro1::on_actionOpen_Image_triggered()
 		//QImage qimg = QImage((const unsigned char*)(img.data), img.cols, img.rows, QImage::Format_RGB32);
 		ui.imageWidget->loadImage(img);
 		ui.imageWidget->repaint();
+
+		// Pass the image to imageHandler
+		img_handler = new ImageHandler(img);
+		// Computing edge cost
+		img_handler->InitializeCostGraph();
 	}
 }
