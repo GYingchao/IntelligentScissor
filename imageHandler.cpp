@@ -40,18 +40,49 @@ double filters[8][9] = {
 double ImageHandler::computeEdgeDerivative(int i, int j, int linkIndex) {
 	
 	// Current pixel RGB tuple is Img(i, j)
-	cv::Vec3d D_link;
-	D_link = filters[linkIndex][0]*origImg.at<cv::Vec3b>(i-1, j-1) +
-		             filters[linkIndex][1]*origImg.at<cv::Vec3b>(i, j-1) +
-					 filters[linkIndex][2]*origImg.at<cv::Vec3b>(i+1, j-1) +
-					 filters[linkIndex][3]*origImg.at<cv::Vec3b>(i-1, j) +
-					 filters[linkIndex][4]*origImg.at<cv::Vec3b>(i, j) +
-					 filters[linkIndex][5]*origImg.at<cv::Vec3b>(i+1, j) +
-					 filters[linkIndex][6]*origImg.at<cv::Vec3b>(i-1, j+1) +
-					 filters[linkIndex][7]*origImg.at<cv::Vec3b>(i, j+1) +
-					 filters[linkIndex][8]*origImg.at<cv::Vec3b>(i+1, j+1);
+	double R_D =     filters[linkIndex][0]*(int)origImg.at<cv::Vec3b>(j-1, i-1)[0] +
+		             filters[linkIndex][1]*(int)origImg.at<cv::Vec3b>(j-1, i)[0] +
+					 filters[linkIndex][2]*(int)origImg.at<cv::Vec3b>(j-1, i+1)[0] +
+					 filters[linkIndex][3]*(int)origImg.at<cv::Vec3b>(j, i-1)[0] +
+					 filters[linkIndex][4]*(int)origImg.at<cv::Vec3b>(j, i)[0] +
+					 filters[linkIndex][5]*(int)origImg.at<cv::Vec3b>(j, i+1)[0] +
+					 filters[linkIndex][6]*(int)origImg.at<cv::Vec3b>(j+1, i-1)[0] +
+					 filters[linkIndex][7]*(int)origImg.at<cv::Vec3b>(j+1, i)[0] +
+					 filters[linkIndex][8]*(int)origImg.at<cv::Vec3b>(j+1, i+1)[0];
 
-	double dlink = norm(D_link)/SQRT3; 
+	double G_D =	 filters[linkIndex][0]*(int)origImg.at<cv::Vec3b>(j-1, i-1)[1] +
+		             filters[linkIndex][1]*(int)origImg.at<cv::Vec3b>(j-1, i)[1] +
+					 filters[linkIndex][2]*(int)origImg.at<cv::Vec3b>(j-1, i+1)[1] +
+					 filters[linkIndex][3]*(int)origImg.at<cv::Vec3b>(j, i-1)[1] +
+					 filters[linkIndex][4]*(int)origImg.at<cv::Vec3b>(j, i)[1] +
+					 filters[linkIndex][5]*(int)origImg.at<cv::Vec3b>(j, i+1)[1] +
+					 filters[linkIndex][6]*(int)origImg.at<cv::Vec3b>(j+1, i-1)[1] +
+					 filters[linkIndex][7]*(int)origImg.at<cv::Vec3b>(j+1, i)[1] +
+					 filters[linkIndex][8]*(int)origImg.at<cv::Vec3b>(j+1, i+1)[1];
+
+	double B_D =	 filters[linkIndex][0]*(int)origImg.at<cv::Vec3b>(j-1, i-1)[2] +
+		             filters[linkIndex][1]*(int)origImg.at<cv::Vec3b>(j-1, i)[2] +
+					 filters[linkIndex][2]*(int)origImg.at<cv::Vec3b>(j-1, i+1)[2] +
+					 filters[linkIndex][3]*(int)origImg.at<cv::Vec3b>(j, i-1)[2] +
+					 filters[linkIndex][4]*(int)origImg.at<cv::Vec3b>(j, i)[2] +
+					 filters[linkIndex][5]*(int)origImg.at<cv::Vec3b>(j, i+1)[2] +
+					 filters[linkIndex][6]*(int)origImg.at<cv::Vec3b>(j+1, i-1)[2] +
+					 filters[linkIndex][7]*(int)origImg.at<cv::Vec3b>(j+1, i)[2] +
+					 filters[linkIndex][8]*(int)origImg.at<cv::Vec3b>(j+1, i+1)[2];
+	
+	//double dlink = cv::norm(D_link)/SQRT3; 
+	double dlink = sqrt((R_D*R_D + G_D*G_D + B_D*B_D)/3);
+	//return G_D;
+
+	/*
+	// using ptr to access image
+	unsigned char *input = (unsigned char*)(origImg.data);
+	double R_D = filters[linkIndex][0]*input[origImg.cols * (j-1) + (i-1)]
+				+filters[linkIndex][1]*input[origImg.cols * (j-1) + (i)]
+				+filters[linkIndex][2]*input[origImg.cols * (j-1) + (i+1)];
+				+filters[linkIndex][3]*input[origImg.cols * (j) + (i-1)]
+				+filters[linkIndex][4]*input[origImg.cols * (j) + (i)]
+	*/
 	return dlink;
 }
 
@@ -68,6 +99,8 @@ void ImageHandler::InitializeCostGraph()
 	double MaxD = 0.0;
 	for(int i=1; i<width()-1; i++) {
 		for(int j=1; j<height()-1; j++) {
+	//for(int i=1; i<5; i++) {
+		//for(int j=1; j<2; j++) {
 			PixelNode tem(0, 0.0, NULL, i, j);
 			for(int k=0; k<8; k++) {
 				tem.linkCost[k] = computeEdgeDerivative(i, j, k);
@@ -80,5 +113,4 @@ void ImageHandler::InitializeCostGraph()
 	for(int i=0; i<graph.size(); i++) {
 		refineEdgeCost(graph[i], MaxD);
 	}
-	//
 }

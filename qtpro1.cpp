@@ -18,12 +18,12 @@ void QtPro1::on_actionOpen_Image_triggered()
 		cv::Mat img = cv::imread(filename.toAscii().data());
 		cv::cvtColor(img, img, CV_BGR2RGB);
 		//QImage qimg = QImage((const unsigned char*)(img.data), img.cols, img.rows, QImage::Format_RGB32);
-		ui.imageWidget->loadImage(img);
-		ui.imageWidget->repaint();
-
+		ui.imageWidget->loadImage(img); 
 		// Pass the image to imageHandler
 		img_handler = new ImageHandler(img);
 		// Computing edge cost
 		img_handler->InitializeCostGraph();
+
+		ui.imageWidget->repaint();
 	}
 }

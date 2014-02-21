@@ -20,7 +20,17 @@
       <x>-1</x>
       <y>-1</y>
       <width>721</width>
-      <height>531</height>
+      <height>331</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="ImageDisplayer" name="test1" native="true">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>329</y>
+      <width>721</width>
+      <height>261</height>
      </rect>
     </property>
    </widget>

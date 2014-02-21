@@ -36,6 +36,7 @@ public:
     QAction *actionUndo;
     QWidget *centralWidget;
     ImageDisplayer *imageWidget;
+    ImageDisplayer *test1;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuAction;
@@ -66,7 +67,10 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         imageWidget = new ImageDisplayer(centralWidget);
         imageWidget->setObjectName(QString::fromUtf8("imageWidget"));
-        imageWidget->setGeometry(QRect(-1, -1, 721, 531));
+        imageWidget->setGeometry(QRect(-1, -1, 721, 331));
+        test1 = new ImageDisplayer(centralWidget);
+        test1->setObjectName(QString::fromUtf8("test1"));
+        test1->setGeometry(QRect(-1, 329, 721, 261));
         QtPro1Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QtPro1Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));

@@ -30,6 +30,7 @@ public:
 	int height() {return origImg.rows;}
 	bool isEmpty() {return origImg.data == NULL;}
 	void InitializeCostGraph();
+	//cv::Mat& printImg(cv::Mat pImg);
 private:
 	double computeEdgeDerivative(int i, int j, int linkIndex);
 	void refineEdgeCost(PixelNode &pn, double factor);
