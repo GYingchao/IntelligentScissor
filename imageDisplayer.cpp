@@ -1,10 +1,27 @@
 #include "imageDisplayer.h"
 
 ImageDisplayer::ImageDisplayer(QWidget *parent) : QWidget(parent){
+	zoomFactor = 0;
+	setFocusPolicy(Qt::StrongFocus);
 	this->setMouseTracking(true);
 }
 
 ImageDisplayer::~ImageDisplayer(){}
+
+void ImageDisplayer::zoomIn()
+{
+	if(zoomFactor < 15) {
+		zoomFactor ++;
+	}
+}
+
+void ImageDisplayer::zoomOut()
+{
+	if(zoomFactor > 0) {
+		zoomFactor --;
+	}
+}
+
 
 void ImageDisplayer::loadImage(cv::Mat img)
 {
@@ -22,10 +39,25 @@ void ImageDisplayer::paintEvent(QPaintEvent *event)
 void ImageDisplayer::drawImage(QPainter &painter)
 {
 	if(img.data != NULL) {
-		QRectF target(0.0f, 0.0f, this->width(), this->height());
+		QRectF target(0.0f, 0.0f, this->width()*2*(1+zoomFactor/10.0), this->height()*2*(1+zoomFactor/10.0));
 		QRectF source(0.0f, 0.0f, this->width(), this->height());
 		QImage::Format format = QImage::Format_RGB888;
 		QImage temImage = QImage((const unsigned char*)img.data, img.cols, img.rows, format);
 		painter.drawImage(target, temImage, source);
 	}
+}
+
+void ImageDisplayer::keyPressEvent(QKeyEvent *event)
+{
+	//if(event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Plus) {
+	if(event->key() == Qt::Key_I){ 
+		zoomIn();
+		this->repaint();
+	}
+	if(event->key() == Qt::Key_O) {
+		zoomOut();
+		this->repaint();
+	}
+
+	
 }
