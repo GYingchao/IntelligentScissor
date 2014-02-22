@@ -114,3 +114,8 @@ void ImageHandler::InitializeCostGraph()
 		refineEdgeCost(graph[i], MaxD);
 	}
 }
+
+void ImageHandler::LiveWireDP(int si, int sj) 
+{
+
+}
