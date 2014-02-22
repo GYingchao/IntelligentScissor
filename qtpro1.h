@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include <QtGui/qfiledialog.h>
+#include <string>
 #include "ui_qtpro1.h"
 #include "imageDisplayer.h"
 #include "imageHandler.h"
@@ -15,7 +16,8 @@ class QtPro1 : public QMainWindow
 public:
 	QtPro1(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~QtPro1();
-
+protected:
+     bool eventFilter(QObject *obj, QEvent *ev);
 public slots:
 	void on_actionOpen_Image_triggered();
 private:

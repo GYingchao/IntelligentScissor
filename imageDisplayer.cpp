@@ -49,15 +49,25 @@ void ImageDisplayer::drawImage(QPainter &painter)
 
 void ImageDisplayer::keyPressEvent(QKeyEvent *event)
 {
-	//if(event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Plus) {
-	if(event->key() == Qt::Key_I){ 
-		zoomIn();
-		this->repaint();
+	if(!isEmpty()) {
+		if(event->key() == Qt::Key_I){ 
+			zoomIn();
+			this->repaint();
+		}
+		if(event->key() == Qt::Key_O) {
+			zoomOut();
+			this->repaint();
+		}
 	}
-	if(event->key() == Qt::Key_O) {
-		zoomOut();
-		this->repaint();
-	}
+}
 
-	
+void ImageDisplayer::mouseMoveEvent ( QMouseEvent * event )
+{
+	if(!isEmpty()) {
+		mouse_x = event->x();
+		mouse_y = event->y();
+	} else {
+		mouse_x = -1;
+		mouse_y = -1;
+	}
 }

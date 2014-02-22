@@ -14,6 +14,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -37,6 +38,7 @@ public:
     QWidget *centralWidget;
     ImageDisplayer *imageWidget;
     ImageDisplayer *test1;
+    QLabel *MousePos;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuAction;
@@ -48,7 +50,7 @@ public:
     {
         if (QtPro1Class->objectName().isEmpty())
             QtPro1Class->setObjectName(QString::fromUtf8("QtPro1Class"));
-        QtPro1Class->resize(720, 640);
+        QtPro1Class->resize(730, 688);
         actionOpen_Image = new QAction(QtPro1Class);
         actionOpen_Image->setObjectName(QString::fromUtf8("actionOpen_Image"));
         actionSave_Contour = new QAction(QtPro1Class);
@@ -68,13 +70,23 @@ public:
         imageWidget = new ImageDisplayer(centralWidget);
         imageWidget->setObjectName(QString::fromUtf8("imageWidget"));
         imageWidget->setGeometry(QRect(-1, -1, 721, 331));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(imageWidget->sizePolicy().hasHeightForWidth());
+        imageWidget->setSizePolicy(sizePolicy);
+        imageWidget->setMouseTracking(true);
+        imageWidget->setFocusPolicy(Qt::StrongFocus);
         test1 = new ImageDisplayer(centralWidget);
         test1->setObjectName(QString::fromUtf8("test1"));
         test1->setGeometry(QRect(-1, 329, 721, 261));
+        MousePos = new QLabel(centralWidget);
+        MousePos->setObjectName(QString::fromUtf8("MousePos"));
+        MousePos->setGeometry(QRect(0, 600, 111, 31));
         QtPro1Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QtPro1Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 720, 26));
+        menuBar->setGeometry(QRect(0, 0, 730, 26));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuAction = new QMenu(menuBar);
@@ -115,6 +127,7 @@ public:
         actionStart->setText(QApplication::translate("QtPro1Class", "Start", 0, QApplication::UnicodeUTF8));
         actionStop->setText(QApplication::translate("QtPro1Class", "Stop", 0, QApplication::UnicodeUTF8));
         actionUndo->setText(QApplication::translate("QtPro1Class", "Undo", 0, QApplication::UnicodeUTF8));
+        MousePos->setText(QApplication::translate("QtPro1Class", "TextLabel", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("QtPro1Class", "File", 0, QApplication::UnicodeUTF8));
         menuAction->setTitle(QApplication::translate("QtPro1Class", "IScissor", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("QtPro1Class", "Help", 0, QApplication::UnicodeUTF8));
