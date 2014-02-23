@@ -50,7 +50,7 @@ public:
     {
         if (QtPro1Class->objectName().isEmpty())
             QtPro1Class->setObjectName(QString::fromUtf8("QtPro1Class"));
-        QtPro1Class->resize(730, 688);
+        QtPro1Class->resize(1024, 768);
         actionOpen_Image = new QAction(QtPro1Class);
         actionOpen_Image->setObjectName(QString::fromUtf8("actionOpen_Image"));
         actionSave_Contour = new QAction(QtPro1Class);
@@ -69,7 +69,7 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         imageWidget = new ImageDisplayer(centralWidget);
         imageWidget->setObjectName(QString::fromUtf8("imageWidget"));
-        imageWidget->setGeometry(QRect(-1, -1, 721, 331));
+        imageWidget->setGeometry(QRect(-1, -1, 741, 681));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -79,14 +79,14 @@ public:
         imageWidget->setFocusPolicy(Qt::StrongFocus);
         test1 = new ImageDisplayer(centralWidget);
         test1->setObjectName(QString::fromUtf8("test1"));
-        test1->setGeometry(QRect(-1, 329, 721, 261));
+        test1->setGeometry(QRect(740, 500, 281, 201));
         MousePos = new QLabel(centralWidget);
         MousePos->setObjectName(QString::fromUtf8("MousePos"));
-        MousePos->setGeometry(QRect(0, 600, 111, 31));
+        MousePos->setGeometry(QRect(0, 680, 121, 31));
         QtPro1Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QtPro1Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 730, 26));
+        menuBar->setGeometry(QRect(0, 0, 1024, 26));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuAction = new QMenu(menuBar);
