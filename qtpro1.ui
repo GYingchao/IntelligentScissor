@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>768</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>-1</x>
       <y>-1</y>
-      <width>741</width>
-      <height>681</height>
+      <width>720</width>
+      <height>640</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -39,8 +39,8 @@
    <widget class="ImageDisplayer" name="test1" native="true">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>500</y>
+      <x>730</x>
+      <y>440</y>
       <width>281</width>
       <height>201</height>
      </rect>
@@ -50,7 +50,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>680</y>
+      <y>650</y>
       <width>121</width>
       <height>31</height>
      </rect>

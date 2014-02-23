@@ -25,6 +25,7 @@ private:
 	cv::Mat img;
 	int zoomFactor;
 	int mouse_x, mouse_y;
+	//QSize origSize;
 
 	//QLabel* m_x;
 	//QLabel* m_y;
