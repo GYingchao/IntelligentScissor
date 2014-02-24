@@ -39,7 +39,7 @@ private:
 	// For mouse left clicking
 	int img_x, img_y;
 	// For seed painting
-	int seed_x, seed_y;
+	//int seed_x, seed_y;
 
 	vector<vec2i> path;
 

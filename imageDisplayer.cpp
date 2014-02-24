@@ -85,7 +85,8 @@ void ImageDisplayer::drawSeed(QPainter &painter)
 {
 	QBrush o = painter.brush();
 	painter.setBrush(QColor(255, 0, 0, 255));
-	painter.drawRect(seed_x-2, seed_y-2, 5, 5);
+	int* tem = img2dis(img_x, img_y);
+	painter.drawRect(tem[0]-2, tem[1]-2, 5, 5);
 	painter.setBrush(o);
 }
 
@@ -162,11 +163,11 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 		//cout << qimg.width() << ", " << qimg.height() << endl;
 		//cout << this->width() << ", " << this->height() << endl;
 		if(started_scissor) {
-			seed_x = event->x();
-			seed_y = event->y();
+			//seed_x = event->x();
+			//seed_y = event->y();
 			//double orig_i = seed_x*(qimg.width()-2)/this->width();
 			//double orig_j = seed_y*(qimg.height()-2)/this->height();
-			int* tem = dis2img(seed_x, seed_y);
+			int* tem = dis2img(event->x(), event->y());
 			// Update mouse clicked pixel pos
 			img_x = tem[0];
 			img_y = tem[1];
