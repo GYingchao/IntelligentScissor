@@ -20,6 +20,7 @@ protected:
      bool eventFilter(QObject *obj, QEvent *ev);
 public slots:
 	void on_actionOpen_Image_triggered();
+	void on_actionStart_triggered();
 private:
 	Ui::QtPro1Class ui;
 	ImageHandler *img_handler;

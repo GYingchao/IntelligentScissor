@@ -21,6 +21,7 @@ protected:
 public:
 	void drawImage(QPainter &painter);
 	void drawSeed(QPainter &painter);
+	void drawPath(QPainter &painter, vector<vec2i>& p);
 	void loadImage(cv::Mat img);
 	void loadImageHandler(ImageHandler* han) {handler = han;}
 	bool isEmpty() {return img.data == NULL;}
@@ -28,6 +29,8 @@ public:
 	int getMouse_y() {return mouse_y;}
 	int getImg_x() {return img_x;}
 	int getImg_y() {return img_y;}
+	bool isStarted() {return started_scissor;}
+	void setStart(bool s) {started_scissor = s;}
 private:
 	cv::Mat img;
 	int zoomFactor;
@@ -38,6 +41,8 @@ private:
 	// For seed painting
 	int seed_x, seed_y;
 
+	vector<vec2i> path;
+
 	QImage qimg;
 	ImageHandler* handler;
 	//QSize origSize;
@@ -47,8 +52,12 @@ private:
 private:
 	void zoomIn();
 	void zoomOut();
+	// Scaled function
+	int* img2dis(int i, int j);
+	int* dis2img(int x, int y);
 private:
 	// control variables
-	bool draw_seed;
+	bool draw_seed;	// whether seed can be drawn
+	bool started_scissor;	// whether iscissor started
 };
 #endif;

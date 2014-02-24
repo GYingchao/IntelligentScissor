@@ -200,8 +200,40 @@ void ImageHandler::LiveWireDP(int si, int sj)
 					}
 				}
 			}
+			min = dynamic_cast<PixelNode*>(pq->ExtractMin());
 		}
 		//cout << (graph[(si-1)*(height()-2)+sj-1].column == si) << endl;
 		//cout << (graph[(si-1)*(height()-2)+sj-1].row == sj) << endl;
 	}
+}
+
+// get the pixel path from current seed to pixel(i, j)
+void ImageHandler::getPath(int i, int j, vector<vec2i>& container) 
+{
+	container.clear();
+	// Check the validity of the image index
+	if(i>=1 && i<=width() && j>=1 && j<=height()) {
+		vec2i t;
+		t.pos[0] = i;
+		t.pos[1] = j;
+		container.push_back(t);
+		// locate pixel(i, j) in the cost graph
+		int ni = i; 
+		int nj = j;
+		PixelNode* ancestor = graph[(ni-1)*(height()-2)+nj-1].prevNode;
+		while(ancestor != NULL) {
+			ni = ancestor->column;
+			nj = ancestor->row;
+			vec2i n;
+			n.pos[0] = ni;
+			n.pos[1] = nj;
+			container.push_back(n);
+			ancestor = graph[(ni-1)*(height()-2)+nj-1].prevNode;
+		}
+		// Assert
+		//if(ancestor->column != cur_si || ancestor->row != cur_sj) cout << "Computing Path Error!!!" << endl;
+		//graph[(i-1)*(height()-2)+j-1].
+		//return tem;
+	// return empty vector;
+	} //else {return tem;}
 }

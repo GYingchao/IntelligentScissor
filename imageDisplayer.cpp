@@ -4,6 +4,7 @@ using namespace std;
 ImageDisplayer::ImageDisplayer(QWidget *parent) : QWidget(parent){
 	zoomFactor = 0;
 	draw_seed = false;
+	started_scissor = false;
 	//origSize = this->size();
 	setFocusPolicy(Qt::StrongFocus);
 	this->setMouseTracking(true);
@@ -31,6 +32,23 @@ void ImageDisplayer::zoomOut()
 	//cout << "Zoom out: " << zoomFactor << endl;
 }
 
+// img pixel index is from (1, 1) to (cols, rows);
+// displayer pixel index is from (0, 0) to (width-1, height-1);
+int* ImageDisplayer::img2dis(int i, int j)
+{
+	int pos[2];
+	pos[0] = static_cast<int>((i-1)*this->width()/(qimg.width()-2));
+	pos[1] = static_cast<int>((j-1)*this->height()/(qimg.height()-2));
+	return pos;
+}
+
+int* ImageDisplayer::dis2img(int x, int y)
+{
+	int pos[2];
+	pos[0] = static_cast<int>(x*(qimg.width()-2)/this->width())+1;
+	pos[1] = static_cast<int>(y*(qimg.height()-2)/this->height())+1;
+	return pos;
+}
 
 void ImageDisplayer::loadImage(cv::Mat img)
 {
@@ -46,6 +64,7 @@ void ImageDisplayer::paintEvent(QPaintEvent *event)
 	widgetPainter.begin(this);
 	drawImage(widgetPainter);
 	if(draw_seed) drawSeed(widgetPainter);
+	if(isStarted() && draw_seed) drawPath(widgetPainter, path);
 	widgetPainter.end();
 }
 
@@ -70,6 +89,22 @@ void ImageDisplayer::drawSeed(QPainter &painter)
 	painter.setBrush(o);
 }
 
+void ImageDisplayer::drawPath(QPainter &painter, vector<vec2i>& p)
+{
+	if(p.empty()) return;
+	QPainterPath path;
+	path.moveTo(p[0].pos[0], p[0].pos[1]);
+	for(int i=1; i<p.size(); i++) {
+		path.lineTo(p[i].pos[0], p[i].pos[1]);
+	}
+	/*
+	 path.moveTo(20, 80);
+	 path.lineTo(20, 30);
+	 path.cubicTo(80, 0, 50, 50, 80, 80);
+	 */
+	painter.drawPath(path);
+}
+
 void ImageDisplayer::keyPressEvent(QKeyEvent *event)
 {
 	if(!isEmpty()) {
@@ -87,8 +122,18 @@ void ImageDisplayer::keyPressEvent(QKeyEvent *event)
 void ImageDisplayer::mouseMoveEvent ( QMouseEvent * event )
 {
 	if(!isEmpty()) {
+		// if image is loaded correctly
 		mouse_x = event->x();
 		mouse_y = event->y();
+
+		if(started_scissor && draw_seed) {
+			// if already started iscissor
+			int* t = dis2img(event->x(), event->y());
+			int ti = t[0];
+			int tj = t[1];
+			handler->getPath(ti, tj, path);
+			cout << "Computing new path..." << path.size() << endl;
+		}
 	} else {
 		mouse_x = -1;
 		mouse_y = -1;
@@ -106,18 +151,25 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 		// compute the corresponding pixel index of the image
 		//cout << qimg.width() << ", " << qimg.height() << endl;
 		//cout << this->width() << ", " << this->height() << endl;
-		seed_x = event->x();
-		seed_y = event->y();
-		double orig_i = seed_x*(qimg.width()-2)/this->width();
-		double orig_j = seed_y*(qimg.height()-2)/this->height();
-		cout << "From displayer: " << orig_i << ", " << orig_j << endl;
-		// Update mouse clicked pixel pos
-		img_x = static_cast<int>(orig_i);
-		img_y = static_cast<int>(orig_j);
-		handler->setSeed(img_x, img_y);
+		if(started_scissor) {
+			seed_x = event->x();
+			seed_y = event->y();
+			//double orig_i = seed_x*(qimg.width()-2)/this->width();
+			//double orig_j = seed_y*(qimg.height()-2)/this->height();
+			int* tem = dis2img(seed_x, seed_y);
+			// Update mouse clicked pixel pos
+			img_x = tem[0];
+			img_y = tem[1];
+			cout << "From displayer: " << tem[0] << ", " << tem[1] << endl;
+			
+			// set new seed to the image matrix
+			handler->setSeed(img_x, img_y);
+			// Compute a new tree
+			handler->LiveWireDP(img_x, img_y);
 
-		// Paint for test
-		draw_seed = true;
+			// Paint for test
+			draw_seed = true;
+		}
 		repaint();
 	}
 }

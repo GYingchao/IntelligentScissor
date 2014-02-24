@@ -32,6 +32,15 @@ void QtPro1::on_actionOpen_Image_triggered()
 	}
 }
 
+void QtPro1::on_actionStart_triggered()
+{
+	if(!ui.imageWidget->isStarted()) {
+		// Start the intelligent scissor
+		ui.imageWidget->setStart(true);
+		cout << "Start the iScissor..." << endl;
+	}
+}
+
 bool QtPro1::eventFilter(QObject *obj, QEvent *ev)
 {
 	if(obj == ui.imageWidget) {
