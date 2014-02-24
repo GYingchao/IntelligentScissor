@@ -28,13 +28,14 @@ void QtPro1::on_actionOpen_Image_triggered()
 		img_handler->InitializeCostGraph();
 		//img_handler->LiveWireDP(3, 5);
 		ui.imageWidget->repaint();
+		ui.imageWidget->loadImageHandler(img_handler);
 	}
 }
 
 bool QtPro1::eventFilter(QObject *obj, QEvent *ev)
 {
 	if(obj == ui.imageWidget) {
-		if(ev->type() == QEvent::Type::MouseMove) {
+		if(ev->type() == QEvent::Type::MouseMove || ev->type() == QEvent::Type::MouseButtonPress) {
 			int x = ui.imageWidget->getMouse_x();
 			int y = ui.imageWidget->getMouse_y();
 			QString tem("X: ");
@@ -42,7 +43,20 @@ bool QtPro1::eventFilter(QObject *obj, QEvent *ev)
 			tem.append(", Y: ");
 			tem.append(QString::number(y));
 			ui.MousePos->setText(tem);
+		} 
+
+		/* This test shows dim(cv::Mat img) is the same with dim(qimg)
+		if(ev->type() == QEvent::Type::MouseButtonPress) {
+			cout << "cv::Mat " << img_handler->width() << ", " << img_handler->height() << endl;
 		}
+		*/
+		/* Unluckily this event happens before imageWidget::MousePressEvent
+		if(ev->type() == QEvent::Type::MouseButtonPress) {
+			// Pass the mouse clicked pixel index into image_handler
+			img_handler->setSeed(ui.imageWidget->getImg_x(), ui.imageWidget->getImg_y());
+			cout << "Into img_hander: " << ui.imageWidget->getImg_x() << ", " << ui.imageWidget->getImg_y() << endl;
+		}
+		*/
 	}
 	return QObject::eventFilter(obj, ev);
 }

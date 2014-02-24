@@ -1,3 +1,5 @@
+#ifndef PIXELNODE_H_H
+#define PIXELNODE_H_H
 #include "fibheap.h"
 class PixelNode : public FibHeapNode{
 
@@ -26,3 +28,4 @@ public:
     //float GetKeyValue() { return Key; };
     //void SetKeyValue(float inkey) { Key = inkey; };
 };
+#endif;

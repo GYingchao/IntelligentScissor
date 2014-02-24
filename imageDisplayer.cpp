@@ -34,6 +34,8 @@ void ImageDisplayer::zoomOut()
 void ImageDisplayer::loadImage(cv::Mat img)
 {
 	this->img = img;
+	QImage::Format format = QImage::Format_RGB888;
+	qimg = QImage((const unsigned char*)img.data, img.cols, img.rows, format);
 }
 
 void ImageDisplayer::paintEvent(QPaintEvent *event)
@@ -53,10 +55,8 @@ void ImageDisplayer::drawImage(QPainter &painter)
 		//cout << painter.device()->height() << endl;
 		QRectF source(0.0f, 0.0f, painter.device()->width(), painter.device()->height());
 		QRectF target(source);
-		QImage::Format format = QImage::Format_RGB888;
-		QImage temImage = QImage((const unsigned char*)img.data, img.cols, img.rows, format);
 		//painter.drawImage(target, temImage, source);
-		painter.drawImage(source, temImage);
+		painter.drawImage(source, qimg);
 	}
 }
 
@@ -82,5 +82,27 @@ void ImageDisplayer::mouseMoveEvent ( QMouseEvent * event )
 	} else {
 		mouse_x = -1;
 		mouse_y = -1;
+	}
+}
+
+void ImageDisplayer::mousePressEvent(QMouseEvent * event)
+{
+	if (event->button() == Qt::LeftButton && !isEmpty()) {
+		// update progress bar
+		mouse_x = event->x();
+		mouse_y = event->y();
+		cout << "x: " << event->x() << ", y: " << event->y() << endl;
+
+		// compute the corresponding pixel index of the image
+		cout << qimg.width() << ", " << qimg.height() << endl;
+		cout << this->width() << ", " << this->height() << endl;
+
+		double orig_i = event->x()*(qimg.width()-2)/this->width();
+		double orig_j = event->y()*(qimg.height()-2)/this->height();
+		cout << "From displayer: " << orig_i << ", " << orig_j << endl;
+		// Update mouse clicked pixel pos
+		img_x = static_cast<int>(orig_i);
+		img_y = static_cast<int>(orig_j);
+		handler->setSeed(img_x, img_y);
 	}
 }

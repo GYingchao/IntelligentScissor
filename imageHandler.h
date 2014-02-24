@@ -1,3 +1,5 @@
+#ifndef IMAGE_HANDLER_H_H
+#define IMAGE_HANDLER_H_H
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <iostream>
@@ -21,6 +23,7 @@ class ImageHandler
 private:
 	cv::Mat origImg;
 	vector<PixelNode> graph;
+	int cur_si, cur_sj;
 public:
 	ImageHandler(cv::Mat img) {
 		origImg = img;
@@ -31,8 +34,10 @@ public:
 	bool isEmpty() {return origImg.data == NULL;}
 	void InitializeCostGraph();
 	void LiveWireDP(int si, int sj);
+	void setSeed(int si, int sj) {cur_si = si; cur_sj = sj;}
 	//cv::Mat& printImg(cv::Mat pImg);
 private:
 	double computeEdgeDerivative(int i, int j, int linkIndex);
 	void refineEdgeCost(PixelNode &pn, double factor);
 };
+#endif;
