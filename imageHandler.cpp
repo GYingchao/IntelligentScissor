@@ -174,7 +174,7 @@ void ImageHandler::LiveWireDP(int si, int sj)
 					// illegal neighbos dose not count
 					if((r_c+i<1) || (r_c+i>width()-2) || (r_r+j<1) || (r_r+j>height()-2)) continue;
 					// index the legal neighbor
-					int r = (r_c+i-1)*(height()-2)+r_r-1;
+					int r = (r_c+i-1)*(height()-2)+r_r+j-1;
 					
 					if(graph[r].state != 2) {
 						// if r has not been expanded
@@ -204,6 +204,10 @@ void ImageHandler::LiveWireDP(int si, int sj)
 		}
 		//cout << (graph[(si-1)*(height()-2)+sj-1].column == si) << endl;
 		//cout << (graph[(si-1)*(height()-2)+sj-1].row == sj) << endl;
+		// for test
+		//printTree();
+	} else {
+		cout << "Invalid seed point input !!!" << endl;
 	}
 }
 
@@ -236,4 +240,19 @@ void ImageHandler::getPath(int i, int j, vector<vec2i>& container)
 		//return tem;
 	// return empty vector;
 	} //else {return tem;}
+}
+
+void ImageHandler::printTree()
+{
+	for(int j=1; j<height()-1; j++) {
+		for(int i=1; i<width()-1; i++) {
+			PixelNode* tem = graph[(i-1)*(height()-2)+j-1].prevNode;
+			if(tem != NULL) {
+				cout << " (" << tem->column << ", " << tem->row << ")";
+			} else {
+				cout << " seed";
+			}
+		}
+		cout << endl;
+	}
 }

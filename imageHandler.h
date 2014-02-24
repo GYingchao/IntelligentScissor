@@ -39,9 +39,10 @@ public:
 	void LiveWireDP(int si, int sj);
 	void setSeed(int si, int sj) {cur_si = si; cur_sj = sj;}
 	void getPath(int i, int j, vector<vec2i>& container);
-	//cv::Mat& printImg(cv::Mat pImg);
 private:
 	double computeEdgeDerivative(int i, int j, int linkIndex);
 	void refineEdgeCost(PixelNode &pn, double factor);
+	//For debug
+	void printTree();
 };
 #endif;
