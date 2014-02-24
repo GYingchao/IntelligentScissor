@@ -20,6 +20,7 @@ protected:
 	void mousePressEvent ( QMouseEvent * event );
 public:
 	void drawImage(QPainter &painter);
+	void drawSeed(QPainter &painter);
 	void loadImage(cv::Mat img);
 	void loadImageHandler(ImageHandler* han) {handler = han;}
 	bool isEmpty() {return img.data == NULL;}
@@ -30,8 +31,13 @@ public:
 private:
 	cv::Mat img;
 	int zoomFactor;
+	// For mouse tracking
 	int mouse_x, mouse_y;
+	// For mouse left clicking
 	int img_x, img_y;
+	// For seed painting
+	int seed_x, seed_y;
+
 	QImage qimg;
 	ImageHandler* handler;
 	//QSize origSize;
@@ -41,5 +47,8 @@ private:
 private:
 	void zoomIn();
 	void zoomOut();
+private:
+	// control variables
+	bool draw_seed;
 };
 #endif;

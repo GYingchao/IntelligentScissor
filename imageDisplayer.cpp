@@ -3,6 +3,7 @@
 using namespace std;
 ImageDisplayer::ImageDisplayer(QWidget *parent) : QWidget(parent){
 	zoomFactor = 0;
+	draw_seed = false;
 	//origSize = this->size();
 	setFocusPolicy(Qt::StrongFocus);
 	this->setMouseTracking(true);
@@ -44,6 +45,7 @@ void ImageDisplayer::paintEvent(QPaintEvent *event)
 	QPainter widgetPainter;
 	widgetPainter.begin(this);
 	drawImage(widgetPainter);
+	if(draw_seed) drawSeed(widgetPainter);
 	widgetPainter.end();
 }
 
@@ -58,6 +60,14 @@ void ImageDisplayer::drawImage(QPainter &painter)
 		//painter.drawImage(target, temImage, source);
 		painter.drawImage(source, qimg);
 	}
+}
+
+void ImageDisplayer::drawSeed(QPainter &painter)
+{
+	QBrush o = painter.brush();
+	painter.setBrush(QColor(255, 0, 0, 255));
+	painter.drawRect(seed_x-2, seed_y-2, 5, 5);
+	painter.setBrush(o);
 }
 
 void ImageDisplayer::keyPressEvent(QKeyEvent *event)
@@ -94,15 +104,20 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 		cout << "x: " << event->x() << ", y: " << event->y() << endl;
 
 		// compute the corresponding pixel index of the image
-		cout << qimg.width() << ", " << qimg.height() << endl;
-		cout << this->width() << ", " << this->height() << endl;
-
-		double orig_i = event->x()*(qimg.width()-2)/this->width();
-		double orig_j = event->y()*(qimg.height()-2)/this->height();
+		//cout << qimg.width() << ", " << qimg.height() << endl;
+		//cout << this->width() << ", " << this->height() << endl;
+		seed_x = event->x();
+		seed_y = event->y();
+		double orig_i = seed_x*(qimg.width()-2)/this->width();
+		double orig_j = seed_y*(qimg.height()-2)/this->height();
 		cout << "From displayer: " << orig_i << ", " << orig_j << endl;
 		// Update mouse clicked pixel pos
 		img_x = static_cast<int>(orig_i);
 		img_y = static_cast<int>(orig_j);
 		handler->setSeed(img_x, img_y);
+
+		// Paint for test
+		draw_seed = true;
+		repaint();
 	}
 }
