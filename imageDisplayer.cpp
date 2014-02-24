@@ -93,16 +93,25 @@ void ImageDisplayer::drawPath(QPainter &painter, vector<vec2i>& p)
 {
 	if(p.empty()) return;
 	QPainterPath path;
-	path.moveTo(p[0].pos[0], p[0].pos[1]);
+	int* tem = img2dis(p[0].pos[0], p[0].pos[1]);
+	path.moveTo(tem[0], tem[1]);
 	for(int i=1; i<p.size(); i++) {
-		path.lineTo(p[i].pos[0], p[i].pos[1]);
+		tem = img2dis(p[i].pos[0], p[i].pos[1]);
+		path.lineTo(tem[0], tem[1]);
 	}
 	/*
 	 path.moveTo(20, 80);
 	 path.lineTo(20, 30);
 	 path.cubicTo(80, 0, 50, 50, 80, 80);
 	 */
+	//QBrush o = painter.brush();
+	//painter.setBrush(QColor(0, 255, 0, 127));
+	QPen o = painter.pen();
+	QPen pen(Qt::green, 3);
+	painter.setPen(pen);
 	painter.drawPath(path);
+	//painter.setBrush(o);
+	painter.setPen(o);
 }
 
 void ImageDisplayer::keyPressEvent(QKeyEvent *event)
@@ -133,6 +142,7 @@ void ImageDisplayer::mouseMoveEvent ( QMouseEvent * event )
 			int tj = t[1];
 			handler->getPath(ti, tj, path);
 			cout << "Computing new path..." << path.size() << endl;
+			repaint();
 		}
 	} else {
 		mouse_x = -1;
