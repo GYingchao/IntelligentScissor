@@ -22,6 +22,7 @@ public:
 	void drawImage(QPainter &painter);
 	void drawSeed(QPainter &painter);
 	void drawPath(QPainter &painter, vector<vec2i>& p);
+	void drawSavedContour(QPainter &painter);
 	void loadImage(cv::Mat img);
 	void loadImageHandler(ImageHandler* han) {handler = han;}
 	bool isEmpty() {return img.data == NULL;}
@@ -30,7 +31,7 @@ public:
 	int getImg_x() {return img_x;}
 	int getImg_y() {return img_y;}
 	bool isStarted() {return started_scissor;}
-	void setStart(bool s) {started_scissor = s;}
+	void Start() {started_scissor = true; path.clear();}
 private:
 	cv::Mat img;
 	int zoomFactor;
@@ -38,10 +39,11 @@ private:
 	int mouse_x, mouse_y;
 	// For mouse left clicking
 	int img_x, img_y;
-	// For seed painting
-	//int seed_x, seed_y;
-
 	vector<vec2i> path;
+
+	// to save the whole contour
+	vector<vec2i> seeds;
+	vector<vector<vec2i>> paths;
 
 	QImage qimg;
 	ImageHandler* handler;

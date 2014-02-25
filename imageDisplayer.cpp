@@ -1,4 +1,4 @@
-#include "imageDisplayer.h"
+﻿#include "imageDisplayer.h"
 #include<iostream>
 using namespace std;
 ImageDisplayer::ImageDisplayer(QWidget *parent) : QWidget(parent){
@@ -63,6 +63,7 @@ void ImageDisplayer::paintEvent(QPaintEvent *event)
 	QPainter widgetPainter;
 	widgetPainter.begin(this);
 	drawImage(widgetPainter);
+	drawSavedContour(widgetPainter);
 	if(draw_seed) drawSeed(widgetPainter);
 	if(isStarted() && draw_seed) drawPath(widgetPainter, path);
 	widgetPainter.end();
@@ -86,7 +87,7 @@ void ImageDisplayer::drawSeed(QPainter &painter)
 	QBrush o = painter.brush();
 	painter.setBrush(QColor(255, 0, 0, 255));
 	int* tem = img2dis(img_x, img_y);
-	painter.drawRect(tem[0]-2, tem[1]-2, 5, 5);
+	painter.drawRect(tem[0]-3, tem[1]-3, 7, 7);
 	painter.setBrush(o);
 }
 
@@ -113,6 +114,39 @@ void ImageDisplayer::drawPath(QPainter &painter, vector<vec2i>& p)
 	painter.drawPath(path);
 	//painter.setBrush(o);
 	painter.setPen(o);
+}
+
+void ImageDisplayer::drawSavedContour(QPainter &painter) 
+{
+	//cout << "seeds size: " << seeds.size() << endl;
+	//cout << "paths size: " << paths.size() << endl;
+	if(seeds.size() ==  paths.size()) {
+		for(int i=0; i<seeds.size(); i++) {
+			// draw seed
+			QBrush o = painter.brush();
+			painter.setBrush(QColor(255, 0, 0, 255));
+			int x = seeds[i].pos[0];
+			int y = seeds[i].pos[1];
+			int* tem = img2dis(x, y);
+			painter.drawRect(tem[0]-3, tem[1]-3, 7, 7);
+			painter.setBrush(o);
+
+			// draw path
+			QPainterPath path;
+			vector<vec2i> p = paths[i];
+			int* tem2 = img2dis(p[0].pos[0], p[0].pos[1]);
+			path.moveTo(tem2[0], tem2[1]);
+			for(int j=1; j<p.size(); j++) {
+				tem2 = img2dis(p[j].pos[0], p[j].pos[1]);
+				path.lineTo(tem2[0], tem2[1]);
+			}
+			QPen op = painter.pen();
+			QPen pen(Qt::green, 3);
+			painter.setPen(pen);
+			painter.drawPath(path);
+			painter.setPen(op);
+		}
+	}
 }
 
 void ImageDisplayer::keyPressEvent(QKeyEvent *event)
@@ -142,7 +176,8 @@ void ImageDisplayer::mouseMoveEvent ( QMouseEvent * event )
 			int ti = t[0];
 			int tj = t[1];
 			handler->getPath(ti, tj, path);
-			cout << "Computing new path..." << path.size() << endl;
+
+			//cout << "Computing new path..." << path.size() << endl;
 			repaint();
 		}
 	} else {
@@ -167,8 +202,19 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 			//seed_y = event->y();
 			//double orig_i = seed_x*(qimg.width()-2)/this->width();
 			//double orig_j = seed_y*(qimg.height()-2)/this->height();
-			int* tem = dis2img(event->x(), event->y());
+
+			// save contour
+			if(draw_seed && (!path.empty())) {
+				vec2i s;
+				s.pos[0] = img_x;
+				s.pos[1] = img_y;
+				seeds.push_back(s);
+				paths.push_back(path);
+				cout << "Contour saved!" << endl;
+			}
+
 			// Update mouse clicked pixel pos
+			int* tem = dis2img(mouse_x, mouse_y);
 			img_x = tem[0];
 			img_y = tem[1];
 			cout << "From displayer: " << tem[0] << ", " << tem[1] << endl;
@@ -177,7 +223,6 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 			handler->setSeed(img_x, img_y);
 			// Compute a new tree
 			handler->LiveWireDP(img_x, img_y);
-
 			// Paint for test
 			draw_seed = true;
 		}

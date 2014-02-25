@@ -36,7 +36,7 @@ void QtPro1::on_actionStart_triggered()
 {
 	if(!ui.imageWidget->isStarted()) {
 		// Start the intelligent scissor
-		ui.imageWidget->setStart(true);
+		ui.imageWidget->Start();
 		cout << "Start the iScissor..." << endl;
 	}
 }
