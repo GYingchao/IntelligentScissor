@@ -31,7 +31,8 @@ public:
 	int getImg_x() {return img_x;}
 	int getImg_y() {return img_y;}
 	bool isStarted() {return started_scissor;}
-	void Start() {started_scissor = true; path.clear();}
+	void Start() {started_scissor = true; draw_seed = false; path.clear(); seeds.clear(); paths.clear();}
+	void Stop() {started_scissor = false;}
 private:
 	cv::Mat img;
 	int zoomFactor;
