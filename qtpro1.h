@@ -22,6 +22,7 @@ public slots:
 	void on_actionOpen_Image_triggered();
 	void on_actionStart_triggered();
 	void on_actionStop_triggered();
+	void on_actionSave_mask_triggered();
 private:
 	Ui::QtPro1Class ui;
 	ImageHandler *img_handler;

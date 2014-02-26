@@ -29,6 +29,9 @@ void QtPro1::on_actionOpen_Image_triggered()
 		//img_handler->LiveWireDP(3, 5);
 		ui.imageWidget->repaint();
 		ui.imageWidget->loadImageHandler(img_handler);
+
+		// Just to test
+		//img_handler->ComputePixelNodeGraph();
 	}
 }
 
@@ -46,6 +49,11 @@ void QtPro1::on_actionStop_triggered()
 {
 	ui.imageWidget->Stop();
 	ui.imageWidget->repaint();
+}
+
+void QtPro1::on_actionSave_mask_triggered()
+{
+	img_handler->saveMask(ui.imageWidget->getContour());
 }
 
 bool QtPro1::eventFilter(QObject *obj, QEvent *ev)

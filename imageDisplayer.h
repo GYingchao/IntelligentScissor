@@ -33,6 +33,7 @@ public:
 	bool isStarted() {return started_scissor;}
 	void Start() {started_scissor = true; draw_seed = false; path.clear(); seeds.clear(); paths.clear();}
 	void Stop() {started_scissor = false;}
+	vector<vector<vec2i>> getContour() {return paths;}
 private:
 	cv::Mat img;
 	int zoomFactor;

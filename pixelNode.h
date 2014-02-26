@@ -10,6 +10,7 @@ public:
 	double totalCost; // The key of fibHeapNode
 	PixelNode *prevNode;
 	int column, row;
+	bool inContour; // Used in saving mask
 public:
 	PixelNode(int state, double totalCost, PixelNode *pre, int column, int row) : FibHeapNode() {
 		this->state = state;
