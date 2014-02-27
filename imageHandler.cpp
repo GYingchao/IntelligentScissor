@@ -277,6 +277,7 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 		return;
 	} else {
 
+		/*
 		// Update pixelNode inContour attribute
 		for(int i=0; i<graph.size(); i++) {
 			graph[i].inContour = false;
@@ -297,10 +298,6 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 			controller = false;
 			for(int j=1; j<width()-1; j++) {
 
-				//*
-				//if(graph[(j-1)*(height()-2)+i-1].inContour && controller==false) controller = true;
-				//else if(graph[(j-1)*(height()-2)+i-1].inContour && controller==true) controller = false;
-				//else;
 				if(graph[(j-1)*(height()-2)+i-1].inContour && !controller) controller = true;
 				else if(graph[(j-1)*(height()-2)+i-1].inContour && controller) controller = false;
 				else if(!graph[(j-1)*(height()-2)+i-1].inContour && controller) controller = true;
@@ -313,21 +310,25 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 					mask.at<cv::Vec3b>(i-1, j-1)[1] = 255;
 					mask.at<cv::Vec3b>(i-1, j-1)[2] = 255;
 				}
-				//*/
-
-				/*
-				if(graph[(j-1)*(height()-2)+i-1].inContour) {
-					mask.at<cv::Vec3b>(i-1, j-1)[0] = 255;
-					mask.at<cv::Vec3b>(i-1, j-1)[1] = 255;
-					mask.at<cv::Vec3b>(i-1, j-1)[2] = 255;
-				} else {
-					mask.at<cv::Vec3b>(i-1, j-1) = origImg.at<cv::Vec3b>(i, j);
-					//mask.at<cv::Vec3b>(j-1, i-1)[1] = origImg.at<cv::Vec3b>(j, i)[1];
-					//mask.at<cv::Vec3b>(j-1, i-1)[2] = origImg.at<cv::Vec3b>(j, i)[2];
-				}
-				*/
 			}
 		}
+		*/
+
+		// Another way..test
+		// convert contour to cv::points set
+		vector<cv::Point> set;
+		for(int p=0; p<contour.size(); p++) {
+			for(int q=0; q<contour[p].size(); q++) {
+				cv::Point a(contour[p][q].pos[0], contour[p][q].pos[1]);
+				set.push_back(a);
+			}
+		}
+		//set.sort
+		vector<vector<cv::Point>> contours;
+		contours.push_back(set);
+
+		cv::Mat mask = origImg.clone();
+		drawContours(mask, contours, -1, cvScalarAll(255), 0);
 
 		cv::cvtColor(mask, mask, CV_RGB2BGR);
 		if(cv::imwrite("mask.bmp", mask)) cout << "mask saved.. " << endl;
