@@ -26,7 +26,9 @@ void QtPro1::on_actionOpen_Image_triggered()
 		img_handler = new ImageHandler(img);
 		// Computing edge cost
 		img_handler->InitializeCostGraph();
-		//img_handler->LiveWireDP(3, 5);
+		
+		// Adaptive widget size
+		ui.imageWidget->resize(img.cols, img.rows);
 		ui.imageWidget->repaint();
 		ui.imageWidget->loadImageHandler(img_handler);
 
