@@ -61,6 +61,11 @@ void QtPro1::on_actionSave_Contour_triggered()
 	img_handler->saveContour(ui.imageWidget->getContour());
 }
 
+void QtPro1::on_actionExit_triggered()
+{
+	exit(0);
+}
+
 bool QtPro1::eventFilter(QObject *obj, QEvent *ev)
 {
 	if(obj == ui.imageWidget) {
