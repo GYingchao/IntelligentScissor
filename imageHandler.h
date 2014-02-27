@@ -41,6 +41,7 @@ public:
 	void getPath(int i, int j, vector<vec2i>& container);
 	cv::Mat ComputePixelNodeGraph();
 	void saveMask(vector<vector<vec2i>> contour);
+	void saveContour(vector<vector<vec2i>> contour);
 private:
 	double computeEdgeDerivative(int i, int j, int linkIndex);
 	void refineEdgeCost(PixelNode &pn, double factor);

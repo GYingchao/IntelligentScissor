@@ -294,6 +294,7 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 		//cv::Vec2b blank(255, 255, 255);
 		bool controller = false;
 		for(int i=1; i<height()-1; i++) {
+			controller = false;
 			for(int j=1; j<width()-1; j++) {
 
 				//*
@@ -330,5 +331,44 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 
 		cv::cvtColor(mask, mask, CV_RGB2BGR);
 		if(cv::imwrite("mask.bmp", mask)) cout << "mask saved.. " << endl;
+	}
+}
+
+void ImageHandler::saveContour(vector<vector<vec2i>> contour)
+{
+	if(contour.empty()) {
+		cout << "Nothing to save.." << endl;
+		return;
+	} else {
+
+		// Update pixelNode inContour attribute
+		for(int i=0; i<graph.size(); i++) {
+			graph[i].inContour = false;
+		}
+		for(int p=0; p<contour.size(); p++) {
+			for(int q=0; q<contour[p].size(); q++) {
+				int i = contour[p][q].pos[0];
+				int j = contour[p][q].pos[1];
+				graph[(i-1)*(height()-2)+j-1].inContour = true;
+			}
+		}
+
+		// Create the with contour image
+		cv::Mat with_contour(height()-2, width()-2, CV_8UC3);
+		for(int i=1; i<height()-1; i++) {
+			for(int j=1; j<width()-1; j++) {
+				if(graph[(j-1)*(height()-2)+i-1].inContour) {
+					with_contour.at<cv::Vec3b>(i-1, j-1)[0] = 0;
+					with_contour.at<cv::Vec3b>(i-1, j-1)[1] = 255;
+					with_contour.at<cv::Vec3b>(i-1, j-1)[2] = 0;
+				} else {
+					with_contour.at<cv::Vec3b>(i-1, j-1) = origImg.at<cv::Vec3b>(i, j);
+					//mask.at<cv::Vec3b>(j-1, i-1)[1] = origImg.at<cv::Vec3b>(j, i)[1];
+					//mask.at<cv::Vec3b>(j-1, i-1)[2] = origImg.at<cv::Vec3b>(j, i)[2];
+				}
+			}
+		}
+		cv::cvtColor(with_contour, with_contour, CV_RGB2BGR);
+		if(cv::imwrite("contour.bmp", with_contour)) cout << "contour saved.. " << endl;
 	}
 }

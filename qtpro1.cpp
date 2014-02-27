@@ -56,6 +56,11 @@ void QtPro1::on_actionSave_mask_triggered()
 	img_handler->saveMask(ui.imageWidget->getContour());
 }
 
+void QtPro1::on_actionSave_Contour_triggered()
+{
+	img_handler->saveContour(ui.imageWidget->getContour());
+}
+
 bool QtPro1::eventFilter(QObject *obj, QEvent *ev)
 {
 	if(obj == ui.imageWidget) {
