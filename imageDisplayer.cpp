@@ -54,7 +54,7 @@ void ImageDisplayer::loadImage(cv::Mat img)
 {
 	this->img = img;
 	QImage::Format format = QImage::Format_RGB888;
-	qimg = QImage((const unsigned char*)img.data, img.cols, img.rows, format);
+	qimg = QImage((const unsigned char*)img.data, img.cols, img.rows, img.cols*img.channels(), format);
 }
 
 void ImageDisplayer::paintEvent(QPaintEvent *event)
