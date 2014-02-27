@@ -277,7 +277,7 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 		return;
 	} else {
 
-		/*
+		
 		// Update pixelNode inContour attribute
 		for(int i=0; i<graph.size(); i++) {
 			graph[i].inContour = false;
@@ -289,7 +289,7 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 				graph[(i-1)*(height()-2)+j-1].inContour = true;
 			}
 		}
-
+		/*
 		// Create the mask image
 		cv::Mat mask(height()-2, width()-2, CV_8UC3);
 		//cv::Vec2b blank(255, 255, 255);
@@ -317,21 +317,34 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 		// Another way..test
 		// convert contour to cv::points set
 		vector<cv::Point> set;
+		/*
 		for(int p=0; p<contour.size(); p++) {
 			for(int q=0; q<contour[p].size(); q++) {
 				cv::Point a(contour[p][q].pos[0], contour[p][q].pos[1]);
 				set.push_back(a);
 			}
 		}
+		*/
 		//set.sort
+		for(int i=0; i<graph.size(); i++) {
+			if(graph[i].inContour) {
+
+				set.push_back(cv::Point(graph[i].column, graph[i].row));
+			}
+		}
 		vector<vector<cv::Point>> contours;
 		contours.push_back(set);
 
 		cv::Mat mask = origImg.clone();
-		drawContours(mask, contours, -1, cvScalarAll(255), 0);
+		drawContours(mask, contours, -1, cvScalarAll(0), 0);
 
-		cv::cvtColor(mask, mask, CV_RGB2BGR);
-		if(cv::imwrite("mask.bmp", mask)) cout << "mask saved.. " << endl;
+		// Get the mask image
+		cv::Mat mask_img = origImg - mask;
+		//cv::Mat mask_img;
+		//cv::subtract(mask, origImg, mask_img);
+
+		cv::cvtColor(mask_img, mask_img, CV_RGB2BGR);
+		if(cv::imwrite("mask.bmp", mask_img)) cout << "mask saved.. " << endl;
 	}
 }
 
