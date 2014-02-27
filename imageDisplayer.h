@@ -34,6 +34,7 @@ public:
 	void Start() {started_scissor = true; draw_seed = false; path.clear(); seeds.clear(); paths.clear();}
 	void Stop() {started_scissor = false;}
 	vector<vector<vec2i>> getContour() {return paths;}
+	void roll_back();
 private:
 	cv::Mat img;
 	int zoomFactor;

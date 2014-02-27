@@ -229,3 +229,28 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 		repaint();
 	}
 }
+
+void ImageDisplayer::roll_back()
+{
+	if(seeds.empty() || paths.empty()) return;
+	if(seeds.size()==1 || paths.size()==1) {
+		draw_seed = false; 
+		path.clear(); 
+		seeds.clear(); 
+		paths.clear();
+		this->repaint();
+		return;
+	}
+	
+	// withdraw the last record
+	vec2i pSeed = seeds.back();
+	img_x = pSeed.pos[0];
+	img_y = pSeed.pos[1];
+	path = paths.back();
+	seeds.pop_back();
+	paths.pop_back();
+
+	handler->setSeed(img_x, img_y);
+	handler->LiveWireDP(img_x, img_y);
+	this->repaint();
+}

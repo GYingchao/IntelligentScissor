@@ -66,6 +66,12 @@ void QtPro1::on_actionExit_triggered()
 	exit(0);
 }
 
+void QtPro1::on_actionUndo_triggered()
+{
+	// Undo once
+	ui.imageWidget->roll_back();
+}
+
 bool QtPro1::eventFilter(QObject *obj, QEvent *ev)
 {
 	if(obj == ui.imageWidget) {
