@@ -192,7 +192,7 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 		// update progress bar
 		mouse_x = event->x();
 		mouse_y = event->y();
-		cout << "x: " << event->x() << ", y: " << event->y() << endl;
+		//cout << "x: " << event->x() << ", y: " << event->y() << endl;
 
 		// compute the corresponding pixel index of the image
 		//cout << qimg.width() << ", " << qimg.height() << endl;
@@ -210,14 +210,14 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 				s.pos[1] = img_y;
 				seeds.push_back(s);
 				paths.push_back(path);
-				cout << "Contour saved!" << endl;
+				//cout << "Contour saved!" << endl;
 			}
 
 			// Update mouse clicked pixel pos
 			int* tem = dis2img(mouse_x, mouse_y);
 			img_x = tem[0];
 			img_y = tem[1];
-			cout << "From displayer: " << tem[0] << ", " << tem[1] << endl;
+			//cout << "From displayer: " << tem[0] << ", " << tem[1] << endl;
 			
 			// set new seed to the image matrix
 			handler->setSeed(img_x, img_y);
