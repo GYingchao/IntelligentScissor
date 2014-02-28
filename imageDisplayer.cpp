@@ -232,7 +232,7 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 
 void ImageDisplayer::roll_back()
 {
-	if(seeds.empty() || paths.empty()) return;
+	if(seeds.empty() || paths.empty() || started_scissor == false) return;
 	if(seeds.size()==1 || paths.size()==1) {
 		draw_seed = false; 
 		path.clear(); 
