@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "pixelNode.h"
-
+#include <QString>
 using namespace std;
 
 /*
@@ -40,8 +40,8 @@ public:
 	void setSeed(int si, int sj) {cur_si = si; cur_sj = sj;}
 	void getPath(int i, int j, vector<vec2i>& container);
 	cv::Mat ComputePixelNodeGraph();
-	void saveMask(vector<vector<vec2i>> contour);
-	void saveContour(vector<vector<vec2i>> contour);
+	void saveMask(vector<vector<vec2i>> contour, QString filename);
+	void saveContour(vector<vector<vec2i>> contour, QString filename);
 private:
 	double computeEdgeDerivative(int i, int j, int linkIndex);
 	void refineEdgeCost(PixelNode &pn, double factor);

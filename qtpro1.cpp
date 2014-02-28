@@ -61,12 +61,18 @@ void QtPro1::on_actionStop_triggered()
 
 void QtPro1::on_actionSave_mask_triggered()
 {
-	img_handler->saveMask(ui.imageWidget->getContour());
+	QString filename = QFileDialog::getSaveFileName(this, "Save mask", QDir::currentPath(), "BMP files(*.bmp)");
+	if(!filename.isNull()) {
+		img_handler->saveMask(ui.imageWidget->getContour(), filename);
+	}	
 }
 
 void QtPro1::on_actionSave_Contour_triggered()
 {
-	img_handler->saveContour(ui.imageWidget->getContour());
+	QString filename = QFileDialog::getSaveFileName(this, "Save contour", QDir::currentPath(), "BMP files(*.bmp)");
+	if(!filename.isNull()) {
+		img_handler->saveContour(ui.imageWidget->getContour(), filename);
+	}
 }
 
 void QtPro1::on_actionExit_triggered()

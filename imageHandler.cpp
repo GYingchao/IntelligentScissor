@@ -317,14 +317,13 @@ cv::Mat ImageHandler::ComputePixelNodeGraph()
 	return png;
 }
 
-void ImageHandler::saveMask(vector<vector<vec2i>> contour)
+void ImageHandler::saveMask(vector<vector<vec2i>> contour, QString filename)
 {
 	if(contour.empty()) {
 		cout << "Nothing to save.." << endl;
 		return;
 	} else {
-
-		
+		if(!filename.endsWith(".bmp")) filename.append(".bmp");
 		// Update pixelNode inContour attribute
 		for(int i=0; i<graph.size(); i++) {
 			graph[i].inContour = false;
@@ -397,17 +396,17 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 		//cv::subtract(mask, origImg, mask_img);
 
 		cv::cvtColor(mask_img, mask_img, CV_RGB2BGR);
-		if(cv::imwrite("mask.bmp", mask_img)) cout << "mask saved.. " << endl;
+		if(cv::imwrite(filename.toStdString().data(), mask_img)) cout << "mask saved.. " << endl;
 	}
 }
 
-void ImageHandler::saveContour(vector<vector<vec2i>> contour)
+void ImageHandler::saveContour(vector<vector<vec2i>> contour, QString filename)
 {
 	if(contour.empty()) {
 		cout << "Nothing to save.." << endl;
 		return;
 	} else {
-
+		if(!filename.endsWith(".bmp")) filename.append(".bmp");
 		// Update pixelNode inContour attribute
 		for(int i=0; i<graph.size(); i++) {
 			graph[i].inContour = false;
@@ -436,6 +435,6 @@ void ImageHandler::saveContour(vector<vector<vec2i>> contour)
 			}
 		}
 		cv::cvtColor(with_contour, with_contour, CV_RGB2BGR);
-		if(cv::imwrite("contour.bmp", with_contour)) cout << "contour saved.. " << endl;
+		if(cv::imwrite(filename.toStdString().data(), with_contour)) cout << "contour saved.. " << endl;
 	}
 }
