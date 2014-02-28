@@ -350,7 +350,7 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 		//cv::subtract(mask, origImg, mask_img);
 
 		cv::cvtColor(mask_img, mask_img, CV_RGB2BGR);
-		if(cv::imwrite("mask.bmp", mask)) cout << "mask saved.. " << endl;
+		if(cv::imwrite("mask.bmp", mask_img)) cout << "mask saved.. " << endl;
 	}
 }
 
