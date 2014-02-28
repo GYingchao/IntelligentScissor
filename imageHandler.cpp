@@ -259,15 +259,62 @@ void ImageHandler::printTree()
 
 cv::Mat ImageHandler::ComputePixelNodeGraph()
 {
-	//if(!graph.empty()) {
-		cv::Mat png;
-		//cout << "Type: " << (origImg.type() == CV_8UC3) << endl;
+	// Before invoke this method, graph should be assigned valid data ahead
+	int png_rows = (height()-2)*3;
+	int png_cols = (width()-2)*3;
+	cv::Mat png(png_rows, png_cols, CV_8UC3);
 
-		// successful return
-		return png;
-	//}
-	// unsuccessful return
-	
+	// rescale the link cost
+	double max_cost = 0.0;
+	for(int i=0; i<graph.size(); i++) {
+		for(int j=0; j<8; j++) {
+			if(max_cost < graph[i].linkCost[j]) max_cost = graph[i].linkCost[j];
+		}
+	}
+
+	for(int i=0; i<width()-2; i++) {
+		for(int j=0; j<height()-2; j++) {
+			//cost(link 0)
+			png.at<cv::Vec3b>(1+j*3, 2+i*3)[0] = graph[i*(height()-2)+j].linkCost[0]/max_cost*255;
+			png.at<cv::Vec3b>(1+j*3, 2+i*3)[1] = graph[i*(height()-2)+j].linkCost[0]/max_cost*255;
+			png.at<cv::Vec3b>(1+j*3, 2+i*3)[2] = graph[i*(height()-2)+j].linkCost[0]/max_cost*255;
+			// cost(link 1)
+			png.at<cv::Vec3b>(j*3, 2+i*3)[0] = graph[i*(height()-2)+j].linkCost[1]/max_cost*255;
+			png.at<cv::Vec3b>(j*3, 2+i*3)[1] = graph[i*(height()-2)+j].linkCost[1]/max_cost*255;
+			png.at<cv::Vec3b>(j*3, 2+i*3)[2] = graph[i*(height()-2)+j].linkCost[1]/max_cost*255;
+			//cost(link 2)
+			png.at<cv::Vec3b>(j*3, 1+i*3)[0] = graph[i*(height()-2)+j].linkCost[2]/max_cost*255;
+			png.at<cv::Vec3b>(j*3, 1+i*3)[1] = graph[i*(height()-2)+j].linkCost[2]/max_cost*255;
+			png.at<cv::Vec3b>(j*3, 1+i*3)[2] = graph[i*(height()-2)+j].linkCost[2]/max_cost*255;
+			//cost(link 3)
+			png.at<cv::Vec3b>(j*3, i*3)[0] = graph[i*(height()-2)+j].linkCost[3]/max_cost*255;
+			png.at<cv::Vec3b>(j*3, i*3)[1] = graph[i*(height()-2)+j].linkCost[3]/max_cost*255;
+			png.at<cv::Vec3b>(j*3, i*3)[2] = graph[i*(height()-2)+j].linkCost[3]/max_cost*255;
+			//cost(link 4)
+			png.at<cv::Vec3b>(1+j*3, i*3)[0] = graph[i*(height()-2)+j].linkCost[4]/max_cost*255;
+			png.at<cv::Vec3b>(1+j*3, i*3)[1] = graph[i*(height()-2)+j].linkCost[4]/max_cost*255;
+			png.at<cv::Vec3b>(1+j*3, i*3)[2] = graph[i*(height()-2)+j].linkCost[4]/max_cost*255;
+			//cost(link 5)
+			png.at<cv::Vec3b>(2+j*3, i*3)[0] = graph[i*(height()-2)+j].linkCost[5]/max_cost*255;
+			png.at<cv::Vec3b>(2+j*3, i*3)[1] = graph[i*(height()-2)+j].linkCost[5]/max_cost*255;
+			png.at<cv::Vec3b>(2+j*3, i*3)[2] = graph[i*(height()-2)+j].linkCost[5]/max_cost*255;
+			//cost(link 6)
+			png.at<cv::Vec3b>(2+j*3, 1+i*3)[0] = graph[i*(height()-2)+j].linkCost[6]/max_cost*255;
+			png.at<cv::Vec3b>(2+j*3, 1+i*3)[1] = graph[i*(height()-2)+j].linkCost[6]/max_cost*255;
+			png.at<cv::Vec3b>(2+j*3, 1+i*3)[2] = graph[i*(height()-2)+j].linkCost[6]/max_cost*255;
+			//cost(link 7)
+			png.at<cv::Vec3b>(2+j*3, 2+i*3)[0] = graph[i*(height()-2)+j].linkCost[7]/max_cost*255;
+			png.at<cv::Vec3b>(2+j*3, 2+i*3)[1] = graph[i*(height()-2)+j].linkCost[7]/max_cost*255;
+			png.at<cv::Vec3b>(2+j*3, 2+i*3)[2] = graph[i*(height()-2)+j].linkCost[7]/max_cost*255;
+			//png.at<cv::Vec3b>(1+j*3, 2+i*3) = graph[i*(height()-2)+j].linkCost[0];
+
+			png.at<cv::Vec3b>(1+3*j, 1+3*i) = origImg.at<cv::Vec3b>(j+1, i+1);
+		}
+	}
+	//cout << "png channels: " << png.channels() << endl;
+	//cout << "png cols: " << png.cols << endl;
+	//cout << "width: " << width() << endl;
+	return png;
 }
 
 void ImageHandler::saveMask(vector<vector<vec2i>> contour)

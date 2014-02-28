@@ -33,7 +33,13 @@ void QtPro1::on_actionOpen_Image_triggered()
 		ui.imageWidget->loadImageHandler(img_handler);
 
 		// Just to test
-		//img_handler->ComputePixelNodeGraph();
+		//cv::Mat png = img_handler->ComputePixelNodeGraph();
+		//ui.test1->resize(png.cols, png.rows);
+		//ui.test1->loadImage(png);
+		//ui.test1->repaint();
+		//cv::namedWindow("Pixel Node Cost Graph");
+		//cv::imshow("cost graph", png);
+		//cv::waitKey(0);
 	}
 }
 
@@ -72,6 +78,15 @@ void QtPro1::on_actionUndo_triggered()
 {
 	// Undo once
 	ui.imageWidget->roll_back();
+}
+
+void QtPro1::on_actionCost_Graph_triggered()
+{
+	if(!ui.imageWidget->isEmpty()) {
+		cv::Mat png = img_handler->ComputePixelNodeGraph();
+		cv::imshow("cost graph", png);
+	}
+	
 }
 
 bool QtPro1::eventFilter(QObject *obj, QEvent *ev)

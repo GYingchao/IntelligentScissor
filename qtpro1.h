@@ -26,6 +26,7 @@ public slots:
 	void on_actionSave_Contour_triggered();
 	void on_actionExit_triggered();
 	void on_actionUndo_triggered();
+	void on_actionCost_Graph_triggered();
 private:
 	Ui::QtPro1Class ui;
 	ImageHandler *img_handler;

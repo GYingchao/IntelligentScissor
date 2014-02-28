@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>750</height>
+    <width>733</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,16 +36,6 @@
      <enum>Qt::StrongFocus</enum>
     </property>
    </widget>
-   <widget class="ImageDisplayer" name="test1" native="true">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>440</y>
-      <width>281</width>
-      <height>201</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="MousePos">
     <property name="geometry">
      <rect>
@@ -65,7 +55,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>733</width>
      <height>26</height>
     </rect>
    </property>
@@ -90,6 +80,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionCost_Graph"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAction"/>
@@ -137,6 +128,11 @@
   <action name="actionUndo">
    <property name="text">
     <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionCost_Graph">
+   <property name="text">
+    <string>Cost Graph</string>
    </property>
   </action>
  </widget>
