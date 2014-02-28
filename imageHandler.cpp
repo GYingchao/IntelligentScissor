@@ -216,7 +216,7 @@ void ImageHandler::getPath(int i, int j, vector<vec2i>& container)
 {
 	container.clear();
 	// Check the validity of the image index
-	if(i>=1 && i<=width() && j>=1 && j<=height()) {
+	if(i>=1 && i<(width()-1) && j>=1 && j<(height()-1)) {
 		vec2i t;
 		t.pos[0] = i;
 		t.pos[1] = j;
@@ -364,19 +364,19 @@ void ImageHandler::saveMask(vector<vector<vec2i>> contour)
 		// Another way..test
 		// convert contour to cv::points set
 		vector<cv::Point> set;
+		// one way of reordering
 		/*
-		for(int p=0; p<contour.size(); p++) {
-			for(int q=0; q<contour[p].size(); q++) {
-				cv::Point a(contour[p][q].pos[0], contour[p][q].pos[1]);
-				set.push_back(a);
-			}
-		}
-		*/
-		//set.sort
 		for(int i=0; i<graph.size(); i++) {
 			if(graph[i].inContour) {
 
 				set.push_back(cv::Point(graph[i].column, graph[i].row));
+			}
+		}
+		*/
+		// another way of reordering
+		for(int p=contour.size()-1; p>=0; p--) {
+			for(int q=0; q<contour[p].size(); q++) {
+				set.push_back(cv::Point(contour[p][q].pos[0], contour[p][q].pos[1]));
 			}
 		}
 		vector<vector<cv::Point>> contours;
