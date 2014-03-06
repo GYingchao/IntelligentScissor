@@ -227,6 +227,16 @@ void ImageDisplayer::mousePressEvent(QMouseEvent * event)
 			draw_seed = true;
 		}
 		repaint();
+	} else if(event->button() == Qt::RightButton && seeds.size()>2) {
+
+		vec2i f_seed = seeds[0];
+
+		// Get the min path from last seed to first seed
+		handler->getPath(f_seed.pos[0], f_seed.pos[1], path);
+		paths.push_back(path);
+		seeds.push_back(f_seed);
+		repaint();
+		this->Stop();
 	}
 }
 
